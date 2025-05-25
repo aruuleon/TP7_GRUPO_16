@@ -7,13 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 	<a href=servletUsuario?Param=1> Inicio</a> <br>
 	<a href=servletUsuario?Param=1> Agregar Seguro</a> <br>
 	<a href=servletUsuario?Param=1> Listar Seguros</a> <br>
-
-
-
+	
  	<h1>Tipo de Seguros de la base de datos</h1>
  	
  Busqueda por tip de seguro 
@@ -24,8 +21,6 @@
 	</select> 
 
 <br>
-
-
 <table border="1">
 	<tr>  <th>ID seguro</th>  
 		  <th>Descripcion Seguro</th>   
@@ -34,10 +29,5 @@
 		  <th>Costo Max Asegurado</th> 
 	</tr>
 </table>
-
-
-
-
-
 </body>
 </html>
