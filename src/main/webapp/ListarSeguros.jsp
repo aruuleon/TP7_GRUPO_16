@@ -7,9 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<a href=servletUsuario?Param=1> Inicio</a> <br>
-	<a href=servletUsuario?Param=1> Agregar Seguro</a> <br>
-	<a href=servletUsuario?Param=1> Listar Seguros</a> <br>
+	<a href=servletSeguro?Param=1> Inicio</a> <br>
+	<a href=servletSeguro?Param=2> Agregar Seguro</a> <br>
+	<a href=servletSeguro?Param=3> Listar Seguros</a> <br>
 	
  	<h1>Tipo de Seguros de la base de datos</h1>
  	
