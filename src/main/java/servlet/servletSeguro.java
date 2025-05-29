@@ -54,13 +54,20 @@ public class servletSeguro extends HttpServlet  {
 			
 			RequestDispatcher rd = request.getRequestDispatcher("ListarSeguros.jsp");   
 	        rd.forward(request, response);
-			
-			
 		}
 		
 		
+		if(request.getParameter("Param") != null && request.getParameter("Param").equals("1"))
+		{
+			RequestDispatcher rd = request.getRequestDispatcher("Inicio.jsp");   
+	        rd.forward(request, response);
+		}
 		
-		
+		if(request.getParameter("Param") != null && request.getParameter("Param").equals("2"))
+		{
+			RequestDispatcher rd = request.getRequestDispatcher("AgregarSeguro.jsp");   
+	        rd.forward(request, response);
+		}
 		
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}

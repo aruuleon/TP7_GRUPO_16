@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.Statement;
+
 import dao.SeguroDao;
 import dominio.Seguro;
 
@@ -19,36 +21,47 @@ public class SeguroDaoImpl implements SeguroDao{
 	private static final String readByTipo = "SELECT * FROM seguros WHERE idTipo = ?";
 	
 	
-	public boolean insert(dominio.Seguro seguro) {
-	
-		PreparedStatement statement;
-		Connection conexion = Conexion.getConexion().getSQLConexion();
-		boolean isInsertExitoso = false;
-		try
-		{
-			statement = conexion.prepareStatement(insert);
-			statement.setString(2, seguro.getDescripcion());
-			statement.setInt(1, seguro.getIdTipo());
-			statement.setDouble(3, seguro.getCostoContratacion());
-			statement.setDouble(4, seguro.getCostoAsegurado());
-			if(statement.executeUpdate() > 0)
-			{
-				conexion.commit();
-				isInsertExitoso = true;
-			}
-		} 
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-			try {
-				conexion.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		}
-		
-		return isInsertExitoso;
-		
+	public boolean insert(Seguro seguro) throws SQLException {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet generatedKeys = null;
+	    
+	    try {
+	        conn = Conexion.getConexion().getSQLConexion();
+	        conn.setAutoCommit(false);
+	        
+	        String sql = insert;
+	        
+	        pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	        pstmt.setString(1, seguro.getDescripcion());
+	        pstmt.setInt(2, seguro.getIdTipo());
+	        pstmt.setDouble(3, seguro.getCostoContratacion());
+	        pstmt.setDouble(4, seguro.getCostoAsegurado());
+	        
+	        int affectedRows = pstmt.executeUpdate();
+	        
+	        if (affectedRows == 0) {
+	            throw new SQLException("No se pudo guardar el seguro");
+	        }
+	        
+	        generatedKeys = pstmt.getGeneratedKeys();
+	        if (generatedKeys.next()) {
+	            seguro.setIdSeguro(generatedKeys.getInt(1));
+	        } else {
+	            throw new SQLException("No se obtuvo el ID generado");
+	        }
+	        
+	        conn.commit();
+	        return true;
+	        
+	    } catch (SQLException e) {
+	        if (conn != null) conn.rollback();
+	        throw e;
+	    } finally {
+	        if (generatedKeys != null) generatedKeys.close();
+	        if (pstmt != null) pstmt.close();
+	        if (conn != null) conn.close();
+	    }
 	}
 	
 	
@@ -163,12 +176,34 @@ public List<Seguro> readbByTipo(int idTipo) {
 	}
 
 
-@Override
-public List<Seguro> readByTipo(int idTipo) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
+	@Override
+	public List<Seguro> readByTipo(int idTipo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public int obtenerProximoIdDisponible() {
+	    Connection conn = null;
+	    Statement stmt = null;
+	    ResultSet rs = null;
+	    try {
+	        conn = Conexion.getConexion().getSQLConexion();
+	        stmt = (Statement) conn.createStatement();
+	        
+	        rs = stmt.executeQuery("SHOW TABLE STATUS LIKE 'seguros'");
+	        
+	        if (rs.next()) {
+	            return rs.getInt("Auto_increment");
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Error" + e.getMessage());
+	        e.printStackTrace();
+	    } finally {
+	    	
+	    }
+	    return 0; 
+	}
+	
 
 }
 

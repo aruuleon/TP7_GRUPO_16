@@ -25,7 +25,7 @@ public class TipoSeguroDaoImpl implements ITipoSeguroDao {
         ResultSet rs = null;
 
         try {
-            conn = Conexion.obtenerConexion();  // hay  que adaptar los metodos de la clase conexion para que se conecte bien 
+            conn = Conexion.getConexion().getSQLConexion();
             String sql = "SELECT idTipo, descripcion FROM tipoSeguros";
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
@@ -37,21 +37,22 @@ public class TipoSeguroDaoImpl implements ITipoSeguroDao {
                 listaTipos.add(tipo);
             }
         } catch (SQLException e) {
-            System.err.println("Error de SQL ");
+            System.err.println("Error de SQL: " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("Error inesperado ");
+            System.err.println("Error inesperado: " + e.getMessage());
             e.printStackTrace();
         } finally {
            
             try {
                 if (rs != null) rs.close();
                 if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                System.err.println("Error ");
+                if (conn !=null) conn.close();
+            } 
+            catch (SQLException e) {
+                System.err.println("Error: " + e.getMessage());
                 e.printStackTrace();
             }
-            Conexion.cerrarConexion(conn);   // adaptar metodos desde la clase conexion
         }
         return listaTipos;
     }
