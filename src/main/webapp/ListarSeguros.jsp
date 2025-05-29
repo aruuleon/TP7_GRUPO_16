@@ -26,15 +26,20 @@ if(request.getAttribute("listaSeg") != null) {
  %>
 
 
+<h1>Tipo de Seguros de la base de datos</h1>
+
+<form action="servletSeguro" method="get">
+    <label>Busqueda por tipo de seguro:</label>
+    <select name="idTipo">
+        <option value="1">Seguro de casas</option>
+        <option value="2">Seguro de vida</option>
+        <option value="3">Seguro de motos</option>
+    </select>
+    <input type="hidden" name="Param" value="4">
+    <input type="submit" value="Filtrar">
+</form>
 	
- 	<h1>Tipo de Seguros de la base de datos</h1>
  	
- Busqueda por tipo de seguro 
-	 <select name= "seguro">			
-				<option>Seguro de casas</option>
-				<option>Seguro de vida</option>
-				<option>Seguro de motos</option>
-	</select> 
 
 <br>
 <table border="1">

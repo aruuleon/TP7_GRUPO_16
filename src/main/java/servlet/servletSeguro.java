@@ -69,6 +69,27 @@ public class servletSeguro extends HttpServlet  {
 	        rd.forward(request, response);
 		}
 		
+		// para tipo seguro
+		
+		if(request.getParameter("Param") != null && request.getParameter("Param").equals("4")) {
+			int idTipo = Integer.parseInt(request.getParameter("idTipo"));
+
+		    SeguroDaoImpl seguroDao = new SeguroDaoImpl();
+		    List<Seguro> lista = null;
+
+		    try {
+		        lista = seguroDao.readByTipo(idTipo); // 
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+
+		    request.setAttribute("listaSeg", lista);
+		    RequestDispatcher rd = request.getRequestDispatcher("ListarSeguros.jsp");
+		    rd.forward(request, response);
+		}
+		
+		
+		
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 

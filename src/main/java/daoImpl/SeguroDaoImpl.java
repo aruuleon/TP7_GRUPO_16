@@ -136,11 +136,10 @@ public class SeguroDaoImpl implements SeguroDao{
 	}
 	
 	
-// esta funcion no uso en la interfaz agregala EMIIII
-public List<Seguro> readbByTipo(int idTipo) {
-		
+
+	public List<Seguro> readByTipo(int idTipo) {
 		PreparedStatement statement;
-		ResultSet resultSet; //Guarda el resultado de la query
+		ResultSet resultSet; 
 		ArrayList<Seguro> seguros = new ArrayList<Seguro>();
 		Conexion conexion = Conexion.getConexion();
 		try 
@@ -164,23 +163,15 @@ public List<Seguro> readbByTipo(int idTipo) {
 			
 		}
 			
-			
 		
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
 		return seguros;
-		
-		
 	}
-
-
-	@Override
-	public List<Seguro> readByTipo(int idTipo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
 	
 	public int obtenerProximoIdDisponible() {
 	    Connection conn = null;
